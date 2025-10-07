@@ -26,12 +26,33 @@ class ResumeProvider with ChangeNotifier {
   Objective? get objective => _objective;
   bool get hasDetails => _hasDetails;
 
+  List<String> _sectionOrder = [
+    'Objective',
+    'Experience',
+    'Personal Details',
+    'Education',
+    'Skills',
+  ];
+
+  final List<String> _defaultSectionOrder = const [
+    'Objective',
+    'Experience',
+    'Personal Details',
+    'Education',
+    'Skills',
+  ];
+
+  List<String> get defaultSections => List<String>.from(_defaultSectionOrder);
+
+  List<String> get sectionOrder => _sectionOrder;
+
   ResumeProvider() {
     _loadPersonalDetails();
     _loadEducations();
     _loadExperiences();
     _loadSkills();
     _loadObjective();
+    _loadSectionOrder();
   }
 
   Future<void> _loadPersonalDetails() async {
@@ -181,6 +202,31 @@ class ResumeProvider with ChangeNotifier {
 
     _objective = objective;
     _hasDetails = true;
+    notifyListeners();
+  }
+
+  Future<void> _loadSectionOrder() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedOrder = prefs.getStringList('sectionOrder');
+    if (savedOrder != null) {
+      final sectionOrder =
+          savedOrder.where((s) => _defaultSectionOrder.contains(s)).toList();
+
+      _sectionOrder =
+          sectionOrder.isNotEmpty
+              ? sectionOrder
+              : List<String>.from(_defaultSectionOrder);
+    }
+    notifyListeners();
+  }
+
+  Future<void> saveSectionOrder(List<String> order) async {
+    final prefs = await SharedPreferences.getInstance();
+    //only allowed default sections
+    final filtered =
+        order.where((s) => _defaultSectionOrder.contains(s)).toList();
+    await prefs.setStringList('sectionOrder', filtered);
+    _sectionOrder = filtered;
     notifyListeners();
   }
 }

@@ -3,6 +3,8 @@ import 'package:resume_builder/screens/education_screen.dart';
 import 'package:resume_builder/screens/experience_screen.dart';
 import 'package:resume_builder/screens/objective_screen.dart';
 import 'package:resume_builder/screens/personal_details.dart';
+import 'package:resume_builder/screens/rearrange_screen.dart';
+import 'package:resume_builder/screens/resume_preview.dart';
 import 'package:resume_builder/screens/skills.dart';
 
 class CreateResume extends StatelessWidget {
@@ -102,8 +104,15 @@ class CreateResume extends StatelessWidget {
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.swap_vert),
-                  title: const Text('Rearrange / Edit Headings'),
-                  onTap: () {},
+                  title: const Text('Rearrange Sections'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RearrangeScreen(),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -112,7 +121,14 @@ class CreateResume extends StatelessWidget {
       ),
       bottomNavigationBar: BottomAppBar(
         child: ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ResumePreview(hasDetails: true),
+              ),
+            );
+          },
           icon: const Icon(Icons.remove_red_eye),
           label: const Text('View CV'),
         ),
