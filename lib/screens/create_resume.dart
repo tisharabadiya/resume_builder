@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:resume_builder/screens/education_screen.dart';
+import 'package:resume_builder/screens/experience_screen.dart';
+import 'package:resume_builder/screens/objective_screen.dart';
 import 'package:resume_builder/screens/personal_details.dart';
+import 'package:resume_builder/screens/skills.dart';
 
 class CreateResume extends StatelessWidget {
   const CreateResume({super.key});
@@ -35,7 +39,14 @@ class CreateResume extends StatelessWidget {
                   leading: const Icon(Icons.school),
                   title: const Text('Education'),
 
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EducationScreen(),
+                      ),
+                    );
+                  },
                 ),
               ),
               // Experience Section
@@ -43,7 +54,14 @@ class CreateResume extends StatelessWidget {
                 child: ListTile(
                   leading: const Icon(Icons.work),
                   title: const Text('Experience'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExperienceScreen(),
+                      ),
+                    );
+                  },
                 ),
               ),
               // Skills Section
@@ -51,7 +69,12 @@ class CreateResume extends StatelessWidget {
                 child: ListTile(
                   leading: const Icon(Icons.star),
                   title: const Text('Skills'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SkillsScreen()),
+                    );
+                  },
                 ),
               ),
               // Objective Section
@@ -59,7 +82,14 @@ class CreateResume extends StatelessWidget {
                 child: ListTile(
                   leading: const Icon(Icons.flag),
                   title: const Text('Objective'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ObjectiveScreen(),
+                      ),
+                    );
+                  },
                 ),
               ),
 

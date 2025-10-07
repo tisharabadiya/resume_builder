@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resume_builder/models/education.dart';
+import 'package:resume_builder/models/experience.dart';
+import 'package:resume_builder/models/objective.dart';
 import 'package:resume_builder/models/personal_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,15 +14,24 @@ class ResumeProvider with ChangeNotifier {
 
   PersonalDetails? _personalDetails;
   List<Education> _educations = [];
+  List<Experience> _experiences = [];
+  List<String> _skills = [];
+  Objective? _objective;
   bool _hasDetails = false;
 
   PersonalDetails? get personalDetails => _personalDetails;
   List<Education> get educations => _educations;
+  List<Experience> get experiences => _experiences;
+  List<String> get skills => _skills;
+  Objective? get objective => _objective;
   bool get hasDetails => _hasDetails;
 
   ResumeProvider() {
     _loadPersonalDetails();
     _loadEducations();
+    _loadExperiences();
+    _loadSkills();
+    _loadObjective();
   }
 
   Future<void> _loadPersonalDetails() async {
@@ -89,5 +100,87 @@ class ResumeProvider with ChangeNotifier {
   Future<void> updateEducation(int index, Education education) async {
     _educations[index] = education;
     await saveEducations(_educations);
+  }
+
+  Future<void> _loadExperiences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final experienceStrings = prefs.getStringList('experiences') ?? [];
+    _experiences =
+        experienceStrings
+            .map(
+              (experienceString) => Experience.fromMap(
+                Map<String, dynamic>.from(json.decode(experienceString)),
+              ),
+            )
+            .toList();
+    notifyListeners();
+  }
+
+  Future<void> saveExperiences(List<Experience> experiences) async {
+    final prefs = await SharedPreferences.getInstance();
+    final experienceStrings =
+        experiences
+            .map((experience) => json.encode(experience.toMap()))
+            .toList();
+    await prefs.setStringList('experiences', experienceStrings);
+
+    _experiences = experiences;
+    _hasDetails = true;
+    notifyListeners();
+  }
+
+  Future<void> addExperience(Experience experience) async {
+    final experiences = List<Experience>.from(_experiences)..add(experience);
+    await saveExperiences(experiences);
+  }
+
+  Future<void> updateExperience(int index, Experience experience) async {
+    _experiences[index] = experience;
+    await saveExperiences(_experiences);
+  }
+
+  Future<void> _loadSkills() async {
+    final prefs = await SharedPreferences.getInstance();
+    _skills = prefs.getStringList('skills') ?? [];
+    notifyListeners();
+  }
+
+  Future<void> saveSkills(List<String> skills) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('skills', skills);
+
+    _skills = skills;
+    _hasDetails = true;
+    notifyListeners();
+  }
+
+  Future<void> addSkill(String skill) async {
+    final skills = List<String>.from(_skills)..add(skill);
+    await saveSkills(skills);
+  }
+
+  Future<void> removeSkill(String skill) async {
+    final skills = _skills.where((s) => s != skill).toList();
+    await saveSkills(skills);
+  }
+
+  Future<void> _loadObjective() async {
+    final prefs = await SharedPreferences.getInstance();
+    final objectiveString = prefs.getString('objective');
+    if (objectiveString != null) {
+      _objective = Objective.fromMap(
+        Map<String, dynamic>.from(json.decode(objectiveString)),
+      );
+    }
+    notifyListeners();
+  }
+
+  Future<void> saveObjective(Objective objective) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('objective', json.encode(objective.toMap()));
+
+    _objective = objective;
+    _hasDetails = true;
+    notifyListeners();
   }
 }
