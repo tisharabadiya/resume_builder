@@ -12,7 +12,10 @@ class RearrangeScreen extends StatelessWidget {
     final allowedSections = resumeProvider.defaultSections;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Rearrange Sections')),
+      appBar: AppBar(
+        title: const Text('Rearrange Sections'),
+        backgroundColor: Colors.lightBlueAccent,
+      ),
       body: Column(
         children: [
           Expanded(

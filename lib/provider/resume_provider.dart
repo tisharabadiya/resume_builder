@@ -6,9 +6,13 @@ import 'package:resume_builder/models/education.dart';
 import 'package:resume_builder/models/experience.dart';
 import 'package:resume_builder/models/objective.dart';
 import 'package:resume_builder/models/personal_detail.dart';
+import 'package:resume_builder/models/resume.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ResumeProvider with ChangeNotifier {
+  List<Resume> _resumes = [];
+  List<Resume> get resumes => _resumes;
+
   bool _isEditing = false;
   bool get isEditing => _isEditing;
 
@@ -25,6 +29,8 @@ class ResumeProvider with ChangeNotifier {
   List<String> get skills => _skills;
   Objective? get objective => _objective;
   bool get hasDetails => _hasDetails;
+
+  int? editingResumeIndex;
 
   List<String> _sectionOrder = [
     'Objective',
@@ -53,6 +59,7 @@ class ResumeProvider with ChangeNotifier {
     _loadSkills();
     _loadObjective();
     _loadSectionOrder();
+    _loadResumes();
   }
 
   Future<void> _loadPersonalDetails() async {
@@ -228,5 +235,76 @@ class ResumeProvider with ChangeNotifier {
     await prefs.setStringList('sectionOrder', filtered);
     _sectionOrder = filtered;
     notifyListeners();
+  }
+
+  Future<void> _loadResumes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final resumeStrings = prefs.getStringList('resumes') ?? [];
+    _resumes =
+        resumeStrings
+            .map(
+              (resumeString) => Resume.fromMap(
+                Map<String, dynamic>.from(json.decode(resumeString)),
+              ),
+            )
+            .toList();
+    notifyListeners();
+  }
+
+  Future<void> saveResumes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final resumeStrings =
+        _resumes.map((resume) => json.encode(resume.toMap())).toList();
+    await prefs.setStringList('resumes', resumeStrings);
+    notifyListeners();
+  }
+
+  Future<void> deleteResume(int index) async {
+    _resumes.removeAt(index);
+    await saveResumes();
+  }
+
+  Future<void> loadResumeForEditing(int index) async {
+    editingResumeIndex = index;
+    _isEditing = true;
+    final resume = _resumes[index];
+    _personalDetails = resume.personalDetails;
+    _educations = resume.educations;
+    _experiences = resume.experiences;
+    _skills = resume.skills;
+    _objective = resume.objective;
+    _hasDetails = true;
+    notifyListeners();
+  }
+
+  void createNewResume() {
+    editingResumeIndex = null;
+    _isEditing = false;
+    _personalDetails = null;
+    _educations = [];
+    _experiences = [];
+    _skills = [];
+    _objective = null;
+    _hasDetails = false;
+    notifyListeners();
+  }
+
+  // Save current resume
+  Future<void> saveCurrentResume() async {
+    final resume = Resume(
+      personalDetails: _personalDetails!,
+      educations: _educations,
+      experiences: _experiences,
+      skills: _skills,
+      objective: _objective,
+    );
+    if (editingResumeIndex != null) {
+      _resumes[editingResumeIndex!] = resume;
+    } else {
+      _resumes.add(resume);
+    }
+
+    await saveResumes();
+    editingResumeIndex = null;
   }
 }

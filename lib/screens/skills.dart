@@ -24,7 +24,10 @@ class _SkillsScreenState extends State<SkillsScreen> {
     final skills = resumeProvider.skills;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Skills')),
+      appBar: AppBar(
+        title: const Text('Add Skills'),
+        backgroundColor: Colors.lightBlueAccent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

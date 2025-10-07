@@ -48,7 +48,10 @@ class _EducationScreenState extends State<EducationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Education')),
+      appBar: AppBar(
+        title: const Text('Add Education'),
+        backgroundColor: Colors.lightBlueAccent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -137,7 +140,7 @@ class _EducationScreenState extends State<EducationScreen> {
                     } else {
                       await resumeProvider.addEducation(education);
                     }
-
+                    await resumeProvider.saveCurrentResume();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Education details saved successfully!'),

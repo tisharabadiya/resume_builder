@@ -27,7 +27,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
         listen: false,
       );
       if (resumeProvider.isEditing && resumeProvider.personalDetails != null) {
-        // Load existing data if editing
+        // Load existing data if edit
         _nameController.text = resumeProvider.personalDetails!.name;
         _addressController.text = resumeProvider.personalDetails!.address;
         _emailController.text = resumeProvider.personalDetails!.email;
@@ -54,7 +54,10 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Personal Details')),
+      appBar: AppBar(
+        title: const Text('Personal Details'),
+        backgroundColor: Colors.lightBlueAccent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -138,12 +141,14 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
                       phone: _phoneController.text,
                     );
                     await resumeProvider.savePersonalDetails(personalDetails);
-                    Navigator.pop(context);
+                    await resumeProvider.saveCurrentResume();
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Details saved successfully!'),
                       ),
                     );
+                    Navigator.pop(context);
                   }
                 },
                 icon: const Icon(Icons.check),

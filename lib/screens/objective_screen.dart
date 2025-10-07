@@ -37,7 +37,10 @@ class _ObjectiveScreenState extends State<ObjectiveScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Objective')),
+      appBar: AppBar(
+        title: const Text('Objective'),
+        backgroundColor: Colors.lightBlueAccent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -76,7 +79,7 @@ class _ObjectiveScreenState extends State<ObjectiveScreen> {
                       description: _objectiveController.text,
                     );
                     await resumeProvider.saveObjective(objective);
-
+                    await resumeProvider.saveCurrentResume();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Objective saved successfully!'),

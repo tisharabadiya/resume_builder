@@ -10,7 +10,9 @@ class ResumePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Your CV')),
+      appBar: AppBar(title: const Text('Your CV'),
+        backgroundColor: Colors.lightBlueAccent,
+      ),
       body: hasDetails ? const _FilledCV() : const _EmptyCV(),
     );
   }

@@ -1,16 +1,55 @@
-# resume_builder
+# Resume Builder App
 
-A new Flutter project.
+A simple Flutter app for building and managing resumes with the ability to add, update, delete, and reorder resume items. The app supports both mobile and web platforms.
+
+---
+
+## Table of Contents
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the App](#running-the-app)
+
+---
+
+## Features
+- **Resume Management**: Add, update, delete, and reorder resume items.
+- **Preview Mode**: View the final resume in a preview screen.
+- **Adaptive Layout**: Optimized for both smartphones and tablets.
+- **Cross-Platform**: Works on mobile (Android/iOS) and web.
+
+---
+
+## Tech Stack
+- **Flutter**: 3.29.3
+- **State Management**: Provider
+- **Data Storage**: SharedPreferences
+- **UI Framework**: Material Design
+
+---
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Prerequisites
+- Flutter SDK (latest version)
+- VS Code 
+- Emulator or physical device for testing
 
-A few resources to get you started if this is your first Flutter project:
+### Installation
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/tisharabadiya/resume_builder.git
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+2. **Install Dependencies**:  
+    flutter pub get 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+3. **Run on device or emulator**:
+    flutter run
+
+4. **Build APK (for Android)**:
+    flutter build apk --release
+
+    The generated APK will be in:
+      build/app/outputs/flutter-apk/app-release.apk

@@ -51,7 +51,10 @@ class _ExperienceScreenState extends State<ExperienceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Experience')),
+      appBar: AppBar(
+        title: const Text('Add Experience'),
+        backgroundColor: Colors.lightBlueAccent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -153,7 +156,7 @@ class _ExperienceScreenState extends State<ExperienceScreen> {
                     } else {
                       await resumeProvider.addExperience(experience);
                     }
-
+                    await resumeProvider.saveCurrentResume();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Experience details saved successfully!'),
