@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:resume_builder/screens/personal_details.dart';
 
 class CreateResume extends StatelessWidget {
   const CreateResume({super.key});
@@ -18,7 +19,14 @@ class CreateResume extends StatelessWidget {
                 child: ListTile(
                   leading: const Icon(Icons.person),
                   title: const Text('Personal Details'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PersonalDetailsScreen(),
+                      ),
+                    );
+                  },
                 ),
               ),
               // Education Section
